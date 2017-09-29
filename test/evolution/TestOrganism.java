@@ -37,16 +37,18 @@ class TestOrganism implements IOrganism {
 
 	//Add random letter
 	@Override
-	public void mutate() {
+	public IOrganism mutate() {
+		String newName;
 		if (random.nextFloat() < 0.3) {
 			//Remove char
 			int charToRemove = random.nextInt(name.length());
-			name = name.substring(0, charToRemove) + name.substring(charToRemove + 1);
+			newName = name.substring(0, charToRemove) + name.substring(charToRemove + 1);
 		}
 		else {
 			//Append random char
-			name = name + letters[random.nextInt(letters.length)];
+			newName = name + letters[random.nextInt(letters.length)];
 		}
+		return new TestOrganism(newName, random);
 	}
 
 	@Override

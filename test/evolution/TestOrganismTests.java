@@ -33,8 +33,9 @@ public class TestOrganismTests extends TestCase {
 	@Test
 	public void testMutate() {
 		String origName = organism1.getName();
-		organism1.mutate();
-		assertNotEquals(origName, organism1.getName());
+		TestOrganism newOrganism = (TestOrganism) organism1.mutate();
+		assertEquals(origName, organism1.getName());
+		assertNotEquals(origName, newOrganism.getName());
 	}
 
 	@Test
