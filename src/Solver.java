@@ -9,16 +9,16 @@ public class Solver {
 		
 		String configuration = args[0];
 		
-		Puzzle puzzle = new Puzzle();
-		PuzzleBuilder builder = new PuzzleBuilder();
-		try {
-			builder.arrange(configuration);
-		} catch (Exception e) {
-			System.err.println("Invalid configuration.");
-			return;
-		}
+//		Puzzle puzzle = new Puzzle();
+//		PuzzleBuilder builder = new PuzzleBuilder();
+//		try {
+//			builder.arrange(configuration);
+//		} catch (Exception e) {
+//			System.err.println("Invalid configuration.");
+//			return;
+//		}
 		
-		System.out.println(PuzzlePrinter.print(puzzle));
+//		System.out.println(PuzzlePrinter.print(puzzle));
 	}
 
 }

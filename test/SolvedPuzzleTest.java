@@ -10,9 +10,8 @@ public class SolvedPuzzleTest {
 
 	@Before
 	public void setUp() throws Exception {
-		puzzle = new Puzzle();
-		builder = new PuzzleBuilder(1);
-		builder.arrange(puzzle, "chCcccdHccsCchdcDDsHSchdDhccSCcHHccc");
+		builder = new PuzzleBuilder("chCcccdHccsCchdcDDsHSchdDhccSCcHHccc", 1);
+		puzzle = builder.getOriginal();
 		System.out.println(PuzzlePrinter.print(puzzle));
 	}
 

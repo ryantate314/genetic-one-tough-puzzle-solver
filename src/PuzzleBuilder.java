@@ -1,23 +1,33 @@
 import java.util.Random;
 
-public class PuzzleBuilder {
+import evolution.IOrganismGenerator;
+
+public class PuzzleBuilder implements IOrganismGenerator<PuzzleAdapter> {
 
 	private Random random;
 	private static char[] CHARS = new char[] {'c', 'C', 's', 'S', 'h', 'H', 'd', 'D' };
 	
-	public PuzzleBuilder() {
-		this(System.currentTimeMillis());
+	public String config;
+	
+	public PuzzleBuilder(String config) {
+		this(config, System.currentTimeMillis());
 	}
 	
-	public PuzzleBuilder(long seed) {
+	public PuzzleBuilder(String config, long seed) {
 		random = new Random(seed);
+		this.config = config;
 	}
 	
-	public Puzzle arrange(String arrangement) throws Exception {
+	public Puzzle getOriginal() throws Exception {
+		return arrange(config);
+	}
+	
+	protected Puzzle arrange(String arrangement) throws Exception {
 		return arrange(new Puzzle(), arrangement);
 	}
 	
-	public Puzzle arrange(Puzzle puzzle, String arrangement) throws Exception {
+	protected Puzzle arrange(Puzzle puzzle, String arrangement) throws Exception {
+		//TODO Validate the provided arrangement is a possible permutation of config
 		if (arrangement.length() != puzzle.getNumPieces() * 4) {
 			throw new Exception("Invalid arrangement.");
 		}
@@ -75,6 +85,21 @@ public class PuzzleBuilder {
 			connector.setConnectionType(ConnectionType.Spade);
 			break;
 		}
+	}
+	
+	private void randomize(Puzzle puzzle) {
+		
+	}
+
+	@Override
+	public PuzzleAdapter newOrganism() {
+		try {
+			Puzzle puzzle = getOriginal();
+		} catch (Exception ex) {
+			return null;
+		}
+		
+		return null;
 	}
 	
 	

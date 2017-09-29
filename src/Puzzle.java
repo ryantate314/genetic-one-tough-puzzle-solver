@@ -41,6 +41,16 @@ public class Puzzle {
 		return pieces.get(index);
 	}
 	
+	private void setPiece(int x, int y, PuzzlePiece piece) {
+		pieces.set(coordsToIndex(x, y), piece);
+	}
+	
+	public void swapPieces(int x1, int y1, int x2, int y2) {
+		PuzzlePiece temp = getPiece(x1, y1);
+		setPiece(x1, y1, getPiece(x2, y2));
+		setPiece(x2, y2, temp);
+	}
+	
 	public int numFit() {
 		int score = 0;
 		for (int y = 0; y < HEIGHT; y++) {
