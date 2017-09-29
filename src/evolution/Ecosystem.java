@@ -37,6 +37,10 @@ public class Ecosystem<T extends IOrganism> {
 		return config.getCrossoverRate();
 	}
 	
+	public int getGeneration() {
+		return generation;
+	}
+	
 	public List<T> getTopN(int n) {
 		if (n > getPopulationSize()) {
 			throw new IndexOutOfBoundsException();
@@ -66,7 +70,7 @@ public class Ecosystem<T extends IOrganism> {
 	
 	private T getWeightedOrganism(int totalWeight) {
 		
-		int pool = random.nextInt(totalWeight);
+		int pool = totalWeight > 0 ? random.nextInt(totalWeight) : 0;
 		
 		for (T organism : population) {
 			pool -= organism.fitness();
@@ -113,9 +117,9 @@ public class Ecosystem<T extends IOrganism> {
 			}
 			
 			if (shouldMutate()) {
-				offspring.mutate();
+				offspring = (T) offspring.mutate();
 			}
-			newPopulation.add(offspring);
+			newPopulation.offer(offspring);
 		}
 		
 		generation++;

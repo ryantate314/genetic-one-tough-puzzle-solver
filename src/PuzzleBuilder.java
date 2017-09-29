@@ -8,6 +8,7 @@ public class PuzzleBuilder implements IOrganismGenerator<PuzzleAdapter> {
 	private static char[] CHARS = new char[] {'c', 'C', 's', 'S', 'h', 'H', 'd', 'D' };
 	
 	public String config;
+	private long seed;
 	
 	public PuzzleBuilder(String config) {
 		this(config, System.currentTimeMillis());
@@ -16,17 +17,18 @@ public class PuzzleBuilder implements IOrganismGenerator<PuzzleAdapter> {
 	public PuzzleBuilder(String config, long seed) {
 		random = new Random(seed);
 		this.config = config;
+		this.seed = seed;
 	}
 	
-	public Puzzle getOriginal() throws Exception {
+	public PuzzleAdapter getOriginal() throws Exception {
 		return arrange(config);
 	}
 	
-	protected Puzzle arrange(String arrangement) throws Exception {
-		return arrange(new Puzzle(), arrangement);
+	protected PuzzleAdapter arrange(String arrangement) throws Exception {
+		return arrange(new PuzzleAdapter(seed), arrangement);
 	}
 	
-	protected Puzzle arrange(Puzzle puzzle, String arrangement) throws Exception {
+	protected PuzzleAdapter arrange(PuzzleAdapter puzzle, String arrangement) throws Exception {
 		//TODO Validate the provided arrangement is a possible permutation of config
 		if (arrangement.length() != puzzle.getNumPieces() * 4) {
 			throw new Exception("Invalid arrangement.");
@@ -87,19 +89,39 @@ public class PuzzleBuilder implements IOrganismGenerator<PuzzleAdapter> {
 		}
 	}
 	
-	private void randomize(Puzzle puzzle) {
-		
+	public void randomize(Puzzle puzzle) {
+		//Swap random number of pieces
+		for (int i = 0; i < random.nextInt(100); i++) {
+			int x = random.nextInt(puzzle.getWidth());
+			int y = random.nextInt(puzzle.getHeight());
+			int x2 = random.nextInt(puzzle.getWidth());
+			int y2;
+			do {
+				y2 = random.nextInt(puzzle.getHeight());
+			} while (y2 == y);
+			puzzle.swapPieces(x, y, x2, y2);
+		}
+		//Rotate each piece a random number of times
+		for (int y = 0; y < puzzle.getHeight(); y++) {
+			for (int x = 0; x < puzzle.getWidth(); x++) {
+				for (int i = 0; i < random.nextInt(4); i++) {
+					puzzle.getPiece(x, y).rotateRight();
+				}
+			}
+		}
 	}
 
 	@Override
 	public PuzzleAdapter newOrganism() {
+		PuzzleAdapter puzzle;
 		try {
-			Puzzle puzzle = getOriginal();
+			puzzle = getOriginal();
+			randomize(puzzle);
 		} catch (Exception ex) {
 			return null;
 		}
 		
-		return null;
+		return puzzle;
 	}
 	
 	

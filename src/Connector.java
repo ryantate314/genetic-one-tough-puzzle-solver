@@ -33,5 +33,9 @@ public class Connector {
 		this.gender = gender;
 	}
 	
+	public Object clone() {
+		return new Connector(connectionType, gender);
+	}
+	
 	
 }

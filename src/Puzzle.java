@@ -41,7 +41,7 @@ public class Puzzle {
 		return pieces.get(index);
 	}
 	
-	private void setPiece(int x, int y, PuzzlePiece piece) {
+	protected void setPiece(int x, int y, PuzzlePiece piece) {
 		pieces.set(coordsToIndex(x, y), piece);
 	}
 	
@@ -49,6 +49,11 @@ public class Puzzle {
 		PuzzlePiece temp = getPiece(x1, y1);
 		setPiece(x1, y1, getPiece(x2, y2));
 		setPiece(x2, y2, temp);
+	}
+	
+	public void rotatePieceRight(int x, int y) {
+		PuzzlePiece piece = getPiece(x, y);
+		
 	}
 	
 	public int numFit() {
@@ -79,5 +84,20 @@ public class Puzzle {
 	//Num possible connections in solved puzzle
 	private int totalFittingConnections() {
 		return 2 * WIDTH * HEIGHT - WIDTH - HEIGHT;
+	}
+	
+	public Puzzle clone() {
+		Puzzle puzzle = new Puzzle();
+		for (int y = 0; y < puzzle.getHeight(); y++) {
+			for (int x = 0; x < puzzle.getWidth(); x++) {
+				puzzle.setPiece(x, y, (PuzzlePiece)getPiece(x, y).clone());
+			}
+		}
+		return puzzle;
+	}
+
+	@Override
+	public String toString() {
+		return PuzzlePrinter.print(this);
 	}
 }

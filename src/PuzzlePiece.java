@@ -47,4 +47,29 @@ public class PuzzlePiece {
 		this.left = left;
 	}
 	
+	public void rotateRight() {
+		Connector temp = getTop();
+		top = left;
+		left = bottom;
+		bottom = right;
+		right = temp;
+	}
+	
+	public void rotateLeft() {
+		Connector temp = getTop();
+		top = right;
+		right = bottom;
+		bottom = left;
+		left = temp;
+	}
+	
+	public PuzzlePiece clone() {
+		PuzzlePiece clone = new PuzzlePiece();
+		clone.top = (Connector) top.clone();
+		clone.right = (Connector) right.clone();
+		clone.bottom = (Connector) bottom.clone();
+		clone.left = (Connector) left.clone();
+		return clone;
+	}
+	
 }
