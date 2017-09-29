@@ -5,12 +5,14 @@ public class EvolutionConfig {
 	private float mutationRate;
 	private long seed;
 	private float crossoverRate;
+	private int numElite;
 	
 	public EvolutionConfig() {
 		populationSize = 500;
 		mutationRate = 0.1f;
 		seed = System.currentTimeMillis();
 		crossoverRate = 0.1f;
+		numElite = 0;
 	}
 
 	public int getPopulationSize() {
@@ -43,6 +45,14 @@ public class EvolutionConfig {
 
 	public void setCrossoverRate(float crossoverRate) {
 		this.crossoverRate = crossoverRate;
+	}
+
+	public int getNumElite() {
+		return numElite;
+	}
+
+	public void setNumElite(int numElite) {
+		this.numElite = numElite;
 	}
 	
 	

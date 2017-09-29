@@ -1,8 +1,6 @@
 package evolution;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-
+import java.util.List;
 import java.util.Random;
 
 import org.junit.Before;
@@ -32,9 +30,12 @@ public class EcosystemTests extends TestCase{
 	public void testNextGeneration() {
 		System.out.println(eco.getTopN(10));
 		System.out.println("Avg fitness: " + eco.averageFitness());
-		eco.nextGeneration();
-		assertEquals(config.getPopulationSize(), eco.getPopulationSize());
-		System.out.println("Avg fitness: " + eco.averageFitness());
+		for (int i = 0; i < 10; i++) {
+			eco.nextGeneration();
+			assertEquals(config.getPopulationSize(), eco.getPopulationSize());
+			System.out.println("Avg fitness: " + eco.averageFitness());
+		}
+		System.out.println(eco.getTopN(10));
 	}
 	
 	@Test
@@ -42,5 +43,26 @@ public class EcosystemTests extends TestCase{
 		int avg = eco.averageFitness();
 		System.out.println("Average fitness: " + avg);
 	}
+	
+	@Test
+	public void testGetBestZero() {
+		List<TestOrganism> result = eco.getTopN(0);
+		assertNotNull(result);
+		assertEquals(0, result.size());
+	}
+	
+	@Test
+	public void testGetBestN() {
+		List<TestOrganism> result = eco.getTopN(10);
+		assertEquals(10, result.size());
+	}
+
+//	@Test
+//	public void testGetBest() {
+//		List<TestOrganism> result = eco.getTopN(1);
+//		TestOrganism best = eco.getBest();
+//		System.out.println(result.get(0) + " =?= " + best);
+//		assertTrue(result.get(0) == best);
+//	}
 
 }

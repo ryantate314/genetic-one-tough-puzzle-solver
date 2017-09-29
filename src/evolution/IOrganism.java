@@ -1,7 +1,7 @@
 package evolution;
 
-public interface IOrganism<T> {
-	public T breed(T mate);
+public interface IOrganism {
+	public IOrganism breed(IOrganism mate);
 	public void mutate();
 	public int fitness();
 }

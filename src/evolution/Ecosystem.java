@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Random;
 
-public class Ecosystem<T extends IOrganism<T>> {
+public class Ecosystem<T extends IOrganism> {
 	private PriorityQueue<T> population;
 	private EvolutionConfig config;
 	
@@ -46,8 +46,8 @@ public class Ecosystem<T extends IOrganism<T>> {
 			result.add(population.poll());
 		}
 		//Add back to priority queue
-		for (T organism : result) {
-			population.offer(organism);
+		for (int i = n - 1; i >= 0; i--) {
+			population.offer(result.get(i));
 		}
 		return result;
 	}
@@ -94,8 +94,12 @@ public class Ecosystem<T extends IOrganism<T>> {
 		return random.nextFloat() < getMutationRate();
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void nextGeneration() {
 		PriorityQueue<T> newPopulation = new PriorityQueue<T>(getPopulationSize(), new FitnessComparator());
+	
+		//Take best n and copy into new population
+		newPopulation.addAll(getTopN(config.getNumElite()));
 	
 		int fitnessSum = getFitnessSum();
 		
@@ -105,7 +109,7 @@ public class Ecosystem<T extends IOrganism<T>> {
 			
 			T offspring = mommy;
 			if (shouldCrossover()) {
-				offspring = mommy.breed(daddy);
+				offspring = (T) mommy.breed(daddy);
 			}
 			
 			if (shouldMutate()) {

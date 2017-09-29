@@ -2,7 +2,7 @@ package evolution;
 
 import java.util.Random;
 
-class TestOrganism implements IOrganism<TestOrganism> {
+class TestOrganism implements IOrganism {
 
 	private String name;
 	
@@ -24,9 +24,13 @@ class TestOrganism implements IOrganism<TestOrganism> {
 	}
 	
 	@Override
-	public TestOrganism breed(TestOrganism mate) {
-		int crossover = random.nextInt(Math.min(name.length(), mate.getName().length()));
-		String newName = name.substring(0, crossover) + mate.getName().substring(crossover + 1);
+	public TestOrganism breed(IOrganism mate) {
+		if (!(mate instanceof TestOrganism)) {
+			throw new UnsupportedOperationException("Cannot breed different species.");
+		}
+		TestOrganism castMate = (TestOrganism) mate;
+		int crossover = random.nextInt(Math.min(name.length(), castMate.getName().length()));
+		String newName = name.substring(0, crossover) + castMate.getName().substring(crossover);
 		TestOrganism newOrg = new TestOrganism(newName, random);
 		return newOrg;
 	}
@@ -34,7 +38,15 @@ class TestOrganism implements IOrganism<TestOrganism> {
 	//Add random letter
 	@Override
 	public void mutate() {
-		name = name + letters[random.nextInt(letters.length)];
+		if (random.nextFloat() < 0.3) {
+			//Remove char
+			int charToRemove = random.nextInt(name.length());
+			name = name.substring(0, charToRemove) + name.substring(charToRemove + 1);
+		}
+		else {
+			//Append random char
+			name = name + letters[random.nextInt(letters.length)];
+		}
 	}
 
 	@Override
