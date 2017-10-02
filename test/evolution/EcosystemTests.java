@@ -56,6 +56,15 @@ public class EcosystemTests extends TestCase{
 		List<TestOrganism> result = eco.getTopN(10);
 		assertEquals(10, result.size());
 	}
+	
+	@Test
+	public void testGetBest() {
+		IOrganism best = eco.getBest();
+		IOrganism best2 = eco.getBest();
+		IOrganism best3 = eco.getBest();
+		assertEquals(best, best2);
+		assertEquals(best2, best3);
+	}
 
 //	@Test
 //	public void testGetBest() {
