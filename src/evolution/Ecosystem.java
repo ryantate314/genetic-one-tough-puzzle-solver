@@ -107,7 +107,7 @@ public class Ecosystem<T extends IOrganism> {
 	
 		int fitnessSum = getFitnessSum();
 		
-		for (int i = 0; i < getPopulationSize(); i++) {
+		while (newPopulation.size() < config.getPopulationSize()) {
 			T mommy = getWeightedOrganism(fitnessSum);
 			T daddy = getWeightedOrganism(fitnessSum);
 			
