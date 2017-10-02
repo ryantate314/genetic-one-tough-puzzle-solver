@@ -18,23 +18,23 @@ public class Solver implements Callable<PuzzleAdapter> {
 		}
 		
 		String configuration = args[0];
-		long seed = 40;
+		long seed = 40L;
 		
-		PuzzleBuilder builder = new PuzzleBuilder(configuration, 5);
-		EvolutionConfig config = new EvolutionConfig();
-		config.setCrossoverRate(1);
-		config.setMutationRate(0.01f);
-		config.setNumElite(5);
-		config.setPopulationSize(1000);
-		PuzzleAdapter best;
-		
-		ExecutorService pool = Executors.newFixedThreadPool(4);
+		ExecutorService pool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 		Set<Future<PuzzleAdapter>> set = new HashSet<Future<PuzzleAdapter>>();
 		
 		for (int i = 0; i < 100; i++) {
-			Callable<PuzzleAdapter> callable = new Solver(config, configuration, seed, 250);
+			EvolutionConfig config = new EvolutionConfig();
+			config.setCrossoverRate(1);
+			config.setMutationRate(0.01f);
+			config.setNumElite(5);
+			config.setPopulationSize(1000);
+			config.setSeed(seed);
+			
+			Callable<PuzzleAdapter> callable = new Solver(config, configuration, 250);
 			Future<PuzzleAdapter> future = pool.submit(callable);
 			set.add(future);
+			
 			seed++;
 		}
 		
@@ -43,6 +43,7 @@ public class Solver implements Callable<PuzzleAdapter> {
 				if (future.get().solved()) {
 					System.out.println("Solved Puzzle");
 					System.out.println(future.get().toString());
+					break;
 				}
 			} catch (InterruptedException | ExecutionException e) {
 				// TODO Auto-generated catch block
@@ -54,25 +55,23 @@ public class Solver implements Callable<PuzzleAdapter> {
 	
 	private EvolutionConfig config;
 	private String puzzleConfig;
-	private long seed;
 	private int numGenerations;
 	
-	public Solver(EvolutionConfig config, String configuration, long seed, int numGenerations) {
+	public Solver(EvolutionConfig config, String configuration, int numGenerations) {
 		this.config = config;
 		this.puzzleConfig = configuration;
-		this.seed = seed;
 		this.numGenerations = numGenerations;
 	}
 
 
 	@Override
 	public PuzzleAdapter call() throws Exception {
-		PuzzleBuilder builder = new PuzzleBuilder(puzzleConfig, seed);
+		PuzzleBuilder builder = new PuzzleBuilder(puzzleConfig, config.getSeed());
 		Ecosystem<PuzzleAdapter> eco = new Ecosystem<PuzzleAdapter>(builder, config);
 		while (!eco.getBest().solved() && eco.getGeneration() < numGenerations ) {
 			eco.nextGeneration();
 		}
-		System.out.println("Thread with seed " + seed + " finished fitness of " + eco.getBest().fitness());
+		System.out.println("Thread with seed " + config.getSeed() + " finished fitness of " + eco.getBest().fitness() + " after " + eco.getGeneration() + " generations.");
 		if (eco.getBest().solved()) {
 			System.out.println(eco.getBest());
 		}

@@ -5,6 +5,10 @@ public class EvolutionConfig {
 	private float mutationRate;
 	private long seed;
 	private float crossoverRate;
+	/**
+	 * The top N organisms to be carried into each new generation unmodified.
+	 * Used to preserve very fit organisms in the gene pool.
+	 */
 	private int numElite;
 	
 	public EvolutionConfig() {
