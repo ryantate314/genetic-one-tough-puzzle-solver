@@ -21,7 +21,9 @@ public class Puzzle {
 	public Puzzle() {
 		pieces = new ArrayList<PuzzlePiece>(NUM_PIECES);
 		for (int i = 0; i < NUM_PIECES; i++) {
-			pieces.add(new PuzzlePiece());
+			PuzzlePiece piece = new PuzzlePiece();
+			piece.setNumber(i + 1);
+			pieces.add(piece);
 		}
 	}
 	
@@ -45,6 +47,24 @@ public class Puzzle {
 		pieces.set(coordsToIndex(x, y), piece);
 	}
 	
+	protected void removePiece(int x, int y) {
+		setPiece(x, y, null);
+	}
+	
+	protected void removePiece(PuzzlePiece piece) throws Exception {
+		setPiece(piece, null);
+	}
+	
+	protected void setPiece(PuzzlePiece currentPiece, PuzzlePiece newPiece) throws Exception {
+		for (int i = 0; i < pieces.size(); i++) {
+			if (pieces.get(i) != null && pieces.get(i).getNumber() == currentPiece.getNumber()) {
+				pieces.set(i, newPiece);
+				return;
+			}
+		}
+		throw new Exception("Piece not found.");
+	}
+	
 	public void swapPieces(int x1, int y1, int x2, int y2) {
 		PuzzlePiece temp = getPiece(x1, y1);
 		setPiece(x1, y1, getPiece(x2, y2));
@@ -53,7 +73,7 @@ public class Puzzle {
 	
 	public void rotatePieceRight(int x, int y) {
 		PuzzlePiece piece = getPiece(x, y);
-		
+		piece.rotateRight();
 	}
 	
 	public int numFit() {
@@ -94,6 +114,15 @@ public class Puzzle {
 			}
 		}
 		return puzzle;
+	}
+	
+	protected PuzzlePiece findPiece(int number) {
+		for (PuzzlePiece piece : pieces) {
+			if (piece.getNumber() == number) {
+				return piece;
+			}
+		}
+		return null;
 	}
 
 	@Override

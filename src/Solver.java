@@ -9,16 +9,25 @@ import java.util.concurrent.Future;
 import evolution.Ecosystem;
 import evolution.EvolutionConfig;
 
+/**
+ * Performs simulations in parallel to try various seeds to solve the puzzle.
+ * 
+ * @author ryan.tate
+ *
+ */
 public class Solver implements Callable<PuzzleAdapter> {
 
 	public static void main(String[] args) {
 		if (args.length < 1) {
-			System.err.println("Usage: java Solver <configuration>");
+			System.err.println("Usage: java Solver {configuration} [seed]");
 			return;
 		}
 		
 		String configuration = args[0];
-		long seed = 40L;
+		long seed = 58;
+		if (args.length == 2) {
+			seed = Long.parseLong(args[1]);
+		}
 		
 		ExecutorService pool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 		Set<Future<PuzzleAdapter>> set = new HashSet<Future<PuzzleAdapter>>();
@@ -31,7 +40,7 @@ public class Solver implements Callable<PuzzleAdapter> {
 			config.setPopulationSize(1000);
 			config.setSeed(seed);
 			
-			Callable<PuzzleAdapter> callable = new Solver(config, configuration, 250);
+			Callable<PuzzleAdapter> callable = new Solver(config, configuration, 150);
 			Future<PuzzleAdapter> future = pool.submit(callable);
 			set.add(future);
 			

@@ -1,17 +1,16 @@
-import java.util.ArrayList;
-import java.util.List;
-
 public class PuzzlePiece {
 	private Connector top;
 	private Connector right;
 	private Connector bottom;
 	private Connector left;
+	private int number;
 	
 	public PuzzlePiece() {
 		top = Connector.defaultConnector();
 		right = Connector.defaultConnector();
 		bottom = Connector.defaultConnector();
 		left = Connector.defaultConnector();
+		number = -1;
 	}
 	
 
@@ -47,6 +46,13 @@ public class PuzzlePiece {
 		this.left = left;
 	}
 	
+	public int getNumber() {
+		return number;
+	}
+	public void setNumber(int number) {
+		this.number = number;
+	}
+	
 	public void rotateRight() {
 		Connector temp = getTop();
 		top = left;
@@ -69,7 +75,21 @@ public class PuzzlePiece {
 		clone.right = (Connector) right.clone();
 		clone.bottom = (Connector) bottom.clone();
 		clone.left = (Connector) left.clone();
+		clone.number = this.number;
 		return clone;
+	}
+	
+	@Override
+	public boolean equals(Object b) {
+		if (b == null) return false;
+		if (!(b instanceof PuzzlePiece)) return false;
+		boolean match = true;
+		PuzzlePiece castB = (PuzzlePiece) b;
+		match &= getTop().equals(castB.getTop());
+		match &= getRight().equals(castB.getRight());
+		match &= getBottom().equals(castB.getBottom());
+		match &= getLeft().equals(castB.getLeft());
+		return match;
 	}
 	
 }

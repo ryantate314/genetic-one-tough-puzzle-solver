@@ -37,5 +37,13 @@ public class Connector {
 		return new Connector(connectionType, gender);
 	}
 	
+	@Override
+	public boolean equals(Object b) {
+		if (!(b instanceof Connector)) return false;
+		Connector castB = (Connector) b;
+		return castB.getGender().equals(getGender())
+				&& castB.getConnectionType().equals(getConnectionType());
+	}
+	
 	
 }

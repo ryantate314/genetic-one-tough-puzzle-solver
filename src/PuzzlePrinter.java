@@ -5,17 +5,33 @@ public class PuzzlePrinter {
 		for (int y = 0; y < puzzle.getHeight(); y++) {
 			for (int x = 0; x < puzzle.getWidth(); x++) {
 				PuzzlePiece piece = puzzle.getPiece(x, y);
-				out.append(String.format(" %s  ", toChar(piece.getTop())));
+				char c = 'n';
+				if (piece != null) {
+					c = toChar(piece.getTop());
+				}
+				out.append(String.format(" %s  ", c));
 			}
 			out.append("\n");
 			for (int x = 0; x < puzzle.getWidth(); x++) {
 				PuzzlePiece piece = puzzle.getPiece(x, y);
-				out.append(String.format("%s %s ", toChar(piece.getLeft()), toChar(piece.getRight())));
+				char c1 = 'n';
+				char c2 = 'n';
+				char d = '-';
+				if (piece != null) {
+					c1 = toChar(piece.getLeft());
+					d = (piece.getNumber() + "").charAt(0);
+					c2 = toChar(piece.getRight());
+				}
+				out.append(String.format("%s%c%s ", c1, d, c2));
 			}
 			out.append("\n");
 			for (int x = 0; x < puzzle.getWidth(); x++) {
 				PuzzlePiece piece = puzzle.getPiece(x, y);
-				out.append(String.format(" %s  ", toChar(piece.getBottom())));
+				char c = 'n';
+				if (piece != null) {
+					c = toChar(piece.getBottom());
+				}
+				out.append(String.format(" %s  ", c));
 			}
 			out.append("\n");
 		}
